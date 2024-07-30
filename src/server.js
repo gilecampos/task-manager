@@ -26,10 +26,11 @@ const handler = (async (request, response) => {
   const route = routes.find((routeObjects) => (
     routeObjects.endpoint === pathname.toLowerCase() && routeObjects.method === request.method
   ));
+
   
   if (route) {
     parseJSON(request, async (data, error) => {
-      if (error && (route.method == "POST" || route.method == 'PATCH')) {
+      if (error) {
         response.writeHead(400, { 'Content-Type': 'application/json' });
         response.end(JSON.stringify({ error: 'Invalid JSON' }));
         return;

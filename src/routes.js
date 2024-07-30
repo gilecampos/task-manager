@@ -3,7 +3,7 @@ const user = new User()
 
 const routes = [
   {
-    endpoint: '/v1/',
+    endpoint: 'v1/',
     method: 'GET',
     handler: function () {
       return {
@@ -13,7 +13,9 @@ const routes = [
     },
     endpoint: '/v1/user',
     method: 'POST',
-    handler: user.createUser
+    handler: function(data) {
+      
+    }
   },
 ]
 

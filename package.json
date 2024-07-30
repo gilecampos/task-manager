@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "nodemon src/server.js",
-    "test": "npx mocha -w --parallel test/unitTest/*.test.js"
+    "test": "npx mocha -w --parallel ./src/tests/*.test.js"
   },
   "keywords": [],
   "author": "",
