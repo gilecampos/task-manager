@@ -5,6 +5,9 @@ import sinon from 'sinon'
 
 import { User } from '../service/user.js'
 import invalidEmail from './mocks/invalid-email.js'
+import emptyEmail from './mocks/empty-email.js'
+import invalidUsername from './mocks/invalid-username.js'
+import { constants } from '../constants/error.js'
 
 describe('Register Suite test', () => {
   let sandbox = {}
@@ -32,12 +35,37 @@ describe('Register Suite test', () => {
       const mock = invalidEmail;
       const user = new User()
       const result = user.validation(mock)
+
       const expected = {
         valid: false,
-        message: "Invalid Email"
+        message: constants.error.email.ERROR_EMAIL_INVALID_MESSAGE
       }
       
-      expect(result.message).to.equal('Invalid Email');
+      expect(result.message).to.equal(expected.message);
+    })
+    it("should request the register with empty email and return HTTP Status 400", async () => {
+      const mock = emptyEmail;
+      const user = new User()
+      const result = user.validation(mock)
+
+      const expected = {
+        valid: false,
+        message: constants.error.email.ERROR_EMAIL_INVALID_MESSAGE
+      }
+
+      expect(result.message).to.equal(expected.message);
+    })
+    it("should request the register with empty username and return HTTP Status 400", async () => {
+      const mock = invalidUsername;
+      const user = new User()
+      const result = user.validation(mock)
+
+      const expected = {
+        valid: false,
+        message: constants.error.username.ERROR_USERNAME_EMPTY_MESSAGE
+      }
+
+      expect(result.message).to.equal(expected.message);
     })
   })
 }) 

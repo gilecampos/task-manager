@@ -1,3 +1,5 @@
+import { constants } from "../constants/error.js"
+
 export class User {
   async createUser(data) {
     const validation = this.validation(data)
@@ -11,14 +13,24 @@ export class User {
     if(!validEmail(data.email)) {
       return {
         valid:false,
-        message: "Invalid Email"
+        message: constants.error.email.ERROR_EMAIL_INVALID_MESSAGE
+      }
+    }
+
+    if(!data.email || data.email.length <= 0) {
+      return {
+        valid:false,
+        message: constants.error.email.ERROR_EMAIL_EMPTY_MESSAGE
+      }
+    }
+    
+    if(!data.username) {
+      return {
+        valid:false,
+        message: constants.error.username.ERROR_USERNAME_EMPTY_MESSAGE
       }
     }
 
     return { valid: true }
-  }
-
-  async insertUser(data) {
-
   }
 }

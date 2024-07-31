@@ -13,8 +13,15 @@ const routes = [
     },
     endpoint: '/v1/user',
     method: 'POST',
-    handler: function(data) {
-      
+    handler: async function(data) {
+      console.log(data)
+      const validation = user.validation(data)
+      if(!validation.status) {
+        return {
+          status: 400,
+          error: validation.message
+        }
+      }
     }
   },
 ]
