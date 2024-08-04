@@ -14,14 +14,26 @@ const routes = [
     endpoint: '/v1/user',
     method: 'POST',
     handler: async function(data) {
-      console.log(data)
       const validation = user.validation(data)
-      if(!validation.status) {
+
+      if(validation.status !== 200) {
         return {
           status: 400,
           error: validation.message
         }
       }
+
+      const passwordHash = await user.encryptPassword(data.password)
+
+      const payload = {
+        username: data.username,
+        email: data.email,
+        password: passwordHash,
+      }
+
+      const insert = await user.createUser(payload)
+      console.log(insert)
+      return { ...insert }
     }
   },
 ]
