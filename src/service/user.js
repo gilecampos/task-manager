@@ -13,10 +13,8 @@ export class User {
         };
       }
 
-      const hashedPassword = await this.encryptPassword(data.password);
-
       const queryString = "INSERT INTO users(username, email, password_hash) VALUES($1, $2, $3) RETURNING *";
-      const payload = [data.username, data.email, hashedPassword];
+      const payload = [data.username, data.email, data.password];
       const res = await pool.query(queryString, payload);
 
       return {
