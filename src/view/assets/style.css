@@ -1,0 +1,159 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background-color: #2C2B2B;
+  height: 100vh;
+  overflow-x: hidden;
+}
+
+main {
+  max-width: 90%;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+}
+
+h1 {
+  color: #fff;
+  margin-bottom: 36px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.login {
+  width: 100%;
+  text-align: center;
+  transition: all .5s ease;
+}
+.register {
+  width: 100%;
+  text-align: center;
+  transition: all .5s ease;
+}
+
+.login.hidden {
+  position: absolute;
+  right: 500px;
+  transition: all .5s ease;
+}
+
+.register.hidden {
+  position: absolute;
+  left: 500px;
+  transition: all .5s ease;
+}
+
+label, input {
+  display: block;
+  max-width: 400px;
+  width: 100%;
+}
+
+input {
+  background-color: #3F3F3F;
+  border: 1px solid #4e4e4e;
+  padding: 8px 24px;
+  margin-bottom: 32px;
+  border-radius: 18px;
+
+  font-size: 18px;
+  color: #fff;
+}
+
+input:focus {
+  outline: 0;
+}
+
+.btn-login,
+.btn-register {
+  background-color: #00a3ff;
+  width: 100%;
+  border: 0;
+  border-radius: 18px;
+  padding: 8px 24px;
+  
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+
+  transition: all .5s ease;
+
+  cursor: pointer;
+}
+
+.btn-login:hover,
+.btn-login:active,
+.btn-register:hover,
+.btn-register:active {
+  opacity: .8;
+}
+
+.btn-signup,
+.btn-sign {
+  background-color: transparent;
+  width: 100%;
+  border: 1px solid #00a3ff;
+  border-radius: 18px;
+  padding: 8px 24px;
+  
+  color: #00a3ff;
+  font-size: 18px;
+  font-weight: bold;
+
+  transition: all .5s ease;
+
+  cursor: pointer;
+}
+
+.btn-signup:hover,
+.btn-signup:active,
+.btn-sign:hover,
+.btn-sign:active {
+  opacity: .8;
+}
+
+.divisor-register {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  margin: 32px 0;
+}
+
+.divisor-register span{
+  color: #fff;
+  font-size: 18px;
+}
+
+.divisor-register span::before {
+  content: "";
+  height: 1px;
+  width: 45%;
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 0%;
+}
+
+.divisor-register span::after {
+  content: "";
+  height: 1px;
+  width: 45%;
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  right: 0%;
+}

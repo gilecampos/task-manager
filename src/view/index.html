@@ -3,9 +3,69 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/style.css">
   <title>Task Manager</title>
+
+ 
 </head>
 <body>
-  
+  <main>
+    <form action="#">
+      <div class="login">
+        <h1>Welcome back...</h1>
+        <label for="email">
+          <input type="text" name="email" id="email" placeholder="e-mail">
+        </label>
+        <label for="password">
+          <input type="text" name="password" id="password" placeholder="password">
+        </label>
+        <button type="submit" class="btn-login">Login</button>
+        <div class="divisor-register">
+          <span>OR</span>
+        </div>
+        
+        <button
+          type="button"
+          class="btn-signup"
+        >
+          Sign up for an account
+        </button>
+      </div>
+
+      <div class="register hidden">
+        <h1>Register</h1>
+        <label for="username">
+          <input type="text" name="username" id="username" placeholder="username">
+        </label>
+        <label for="email">
+          <input type="text" name="email" id="email" placeholder="e-mail">
+        </label>
+        <label for="password">
+          <input type="text" name="password" id="password" placeholder="password">
+        </label>
+        <button type="submit" class="btn-register">Register</button>
+        <div class="divisor-register">
+          <span>OR</span>
+        </div>
+        
+        <button
+          type="button"
+          class="btn-sign"
+        >
+          Sign in
+        </button>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    const buttonToRegisterScreen = document.querySelector(".btn-signup")
+    const loginScreen = document.querySelector(".login")
+    const registerScreen = document.querySelector(".register")
+    buttonToRegisterScreen.addEventListener("click", () => {
+      loginScreen.classList.add("hidden")
+      registerScreen.classList.remove("hidden")
+    })
+  </script>
 </body>
 </html>
