@@ -16,6 +16,8 @@ import { constants } from '../constants/error.js'
 describe('Register Suite test', () => {
   let sandbox = {}
   let app;
+  let stubCreateUser;
+  let stubCheckIFUserExisting;
   before(async () => {
     const serverModule = await import('../server.js')
     app = serverModule.default
@@ -29,34 +31,58 @@ describe('Register Suite test', () => {
 
   beforeEach(() => {
     sandbox = sinon.createSandbox()
+    stubCreateUser = sandbox.stub(User.prototype, 'createUser');
+    stubCheckIFUserExisting = sandbox.stub(User.prototype, 'checkIFUserExisting');
   })
   afterEach(() => {
     sandbox.restore()
+    stubCreateUser.restore()
+    stubCheckIFUserExisting.restore()
   })
 
   describe("Validation Fields", () => {
     it("should return an error for invalid email format", async () => {
-      const mock = invalidEmail;
       const user = new User()
+      const mock = invalidEmail;
+      const spy = sandbox.spy(
+        user,
+        user.validation.name
+      )
+      
       const result = user.validation(mock)
-
+      const { args } = spy.getCall(0)
+      const expectedCallCount = 1;
       const expected = {
-        valid: false,
+        status: 400,
         message: constants.error.email.ERROR_EMAIL_INVALID_MESSAGE
       }
-
+      
+      expect(expectedCallCount).to.equal(spy.callCount)
+      expect(result).to.deep.equal(expected)
+      expect(spy.calledWith(mock)).to.be.true
+      expect(args[0]).to.deep.equal(mock)
       expect(result.message).to.equal(expected.message);
     })
     it("should return an error for empty email", async () => {
       const mock = emptyEmail;
       const user = new User()
+      const spy = sandbox.spy(
+        user,
+        user.validation.name
+      )
       const result = user.validation(mock)
-
       const expected = {
-        valid: false,
+        status: 400,
         message: constants.error.email.ERROR_EMAIL_INVALID_MESSAGE
       }
-
+      const expectedCallCount = 1;
+      const { args } = spy.getCall(0)
+      
+      expect(result).to.have.property("status").that.is.a('number')
+      expect(result).to.have.property("message").that.is.a('string')
+      expect(args[0]).to.be.deep.equal(mock)
+      expect(spy.callCount).to.equal(expectedCallCount)
+      expect(result).to.be.deep.equal(expected)
       expect(result.message).to.equal(expected.message);
     })
     it("should return an error for empty username", async () => {
@@ -129,12 +155,20 @@ describe('Register Suite test', () => {
   })
   describe("POST /user", () => {
     it('should request the register with valid user and return HTTP status 200', async () => {
+      stubCheckIFUserExisting.resolves(0);
+      stubCreateUser.resolves({
+        id: 1,
+        status: 200,
+        message: "Created successfully user"
+      });
+
       const response = await supertest(app)
         .post('/v1/user')
         .send(validUser)
         .expect(200)
       
       const expected = {
+        id: 1,
         status: 200,
         message: "Created successfully user"
       }
