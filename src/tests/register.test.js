@@ -88,13 +88,23 @@ describe('Register Suite test', () => {
     it("should return an error for empty username", async () => {
       const mock = emptyUsername;
       const user = new User()
-      const result = user.validation(mock)
-
+      const spy = sandbox.spy(
+        user,
+        user.validation.name
+      )
       const expected = {
         valid: false,
         message: constants.error.username.ERROR_USERNAME_EMPTY_MESSAGE
       }
+      const result = user.validation(mock)
 
+      const expectedCallCount = 1;
+      const { args } = spy.getCall(0)
+      
+      expect(result).to.have.property("status").that.is.a('number')
+      expect(result).to.have.property("message").that.is.a('string')
+      expect(args[0]).to.be.deep.equal(mock)
+      expect(spy.callCount).to.equal(expectedCallCount)
       expect(result.message).to.equal(expected.message);
     })
     it("should return an error for username with invalid length", async () => {
@@ -166,6 +176,7 @@ describe('Register Suite test', () => {
         .post('/v1/user')
         .send(validUser)
         .expect(200)
+
       
       const expected = {
         id: 1,
