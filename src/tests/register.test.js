@@ -4,6 +4,7 @@ import supertest from 'supertest'
 import sinon from 'sinon'
 
 import { User } from '../service/user.js'
+import { Password } from '../service/password.js'
 import invalidEmail from './mocks/invalid-email.js'
 import emptyEmail from './mocks/empty-email.js'
 import emptyUsername from './mocks/empty-username.js'
@@ -36,8 +37,6 @@ describe('Register Suite test', () => {
   })
   afterEach(() => {
     sandbox.restore()
-    stubCreateUser.restore()
-    stubCheckIFUserExisting.restore()
   })
 
   describe("Validation Fields", () => {
@@ -101,7 +100,7 @@ describe('Register Suite test', () => {
       const expectedCallCount = 1;
       const { args } = spy.getCall(0)
       
-      expect(result).to.have.property("status").that.is.a('number')
+      expect(result.status).to.be.equal(400)
       expect(result).to.have.property("message").that.is.a('string')
       expect(args[0]).to.be.deep.equal(mock)
       expect(spy.callCount).to.equal(expectedCallCount)
@@ -148,10 +147,10 @@ describe('Register Suite test', () => {
   describe("Encrypt Password", () => {
     it('should valid password and return your hash', async () => {
       const password = "Gi@25042021"
-      const user = new User()
+      const crypt = new Password()
       const stub = sandbox.stub(
-        user,
-        user.encryptPassword.name
+        crypt,
+        crypt.encryptPassword.name
       )
 
       stub
@@ -159,7 +158,7 @@ describe('Register Suite test', () => {
         .resolves('$2b$10$cGQ9jCGDKpXDTbDRwzpvNuuouv.0sZDasXjrZQpTuHzYNP1VjRng2')
 
       const expected = '$2b$10$cGQ9jCGDKpXDTbDRwzpvNuuouv.0sZDasXjrZQpTuHzYNP1VjRng2'
-      const result = await user.encryptPassword(password)
+      const result = await crypt.encryptPassword(password)
       expect(result).to.equal(expected)
     })
   })
