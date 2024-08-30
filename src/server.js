@@ -2,23 +2,6 @@ import http from 'http';
 import url from 'url';
 import routes from './routes.js';
 
-const parseJSON = (request, callback) => {
-  let body = [];
-  request.on('data', chunk => {
-    body.push(chunk);
-  });
-  
-  request.on('end', () => {
-    try {
-      body = Buffer.concat(body).toString();
-      const parsedData = JSON.parse(body);
-      callback(parsedData, null);
-    } catch (error) {
-      callback(null, error);
-    }
-  });
-};
-
 const handler = (async (request, response) => {
   const parsedUrl = url.parse(request.url, true);
   
@@ -29,22 +12,12 @@ const handler = (async (request, response) => {
 
   
   if (route) {
-    parseJSON(request, async (data, error) => {
-      if (error) {
-        response.writeHead(400, { 'Content-Type': 'application/json' });
-        response.end(JSON.stringify({ error: 'Invalid JSON' }));
-        return;
-      }
 
-      try {
-        const result = await route.handler(data);
-        response.writeHead(result.status, { 'Content-Type': 'application/json' });
-        response.end(JSON.stringify(result));
-      } catch (error) {
-        response.writeHead(400, { 'Content-Type': 'application/json' });
-        response.end(JSON.stringify({ error: error.message }));
-      }
-    });
+    try {
+      await route.handler(request, response)
+    } catch (error) {
+      console.error(error)
+    }
   } else {
     response.writeHead(404, { 'Content-type': 'text/html' });
     response.end(`Cannot ${request.method} ${parsedUrl.pathname}`);
