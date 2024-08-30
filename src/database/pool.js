@@ -2,11 +2,11 @@ import pkg from 'pg';
 const { Pool } = pkg;
 
 const pool = new Pool({
-  user: process.env.PGUSER,
-  password: process.env.PGPASSWORD,
-  host: process.env.PGHOST,
-  port: process.env.PGPORT,
-  database: process.env.PGDATABASE,
+  user: process.env.PGUSER || 'root',
+  password: process.env.PGPASSWORD || 'root',
+  host: process.env.PGHOST || 'localhost',
+  port: process.env.PGPORT || 5434,
+  database: process.env.PGDATABASE || 'task',
 });
 
 export default pool
